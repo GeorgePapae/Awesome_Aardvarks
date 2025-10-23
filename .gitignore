@@ -1,0 +1,28 @@
+
+
+# Allow code, data and .sh scripts
+!*.sh
+!*/code/**
+!*/data/**
+!*.md
+
+# Allow results folder but ignore the contents except .gitkeep
+!*/results/
+*/results/*
+!*/results/.gitkeep
+
+# Ignore sandbox and other temp files
+*/sandbox/*
+*/sandbox/
+.DS_Store
+*/__pycache__/
+.RData
+*/.RData
+*/.Rhistory
+.Rhistory
+*.tmp
+*~
+*.yaml
+myenv/*
+.
+..
