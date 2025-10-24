@@ -1,8 +1,8 @@
 # Group Work Contributions
 
-**Assignment**: CMEE Bootcamp groupwork (incl. DNA alignment, Missing oak) 
-**Group Members**: An Dao, Ekadh Ranganathan, George Papaeracleous, Shuqing Ren, Ziyang Wang
-**Submission Date**: [Date]
+**Assignment**: CMEE Bootcamp groupwork (incl. DNA alignment, Missing oak)  
+**Group Members**: An Dao, Ekadh Ranganathan, George Papaeracleous, Shuqing Ren, Ziyang Wang  
+**Submission Date**: [Date]  
 
 ## Individual Contributions
 
