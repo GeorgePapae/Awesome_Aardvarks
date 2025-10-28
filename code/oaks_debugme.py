@@ -45,6 +45,8 @@ def main(argv):
     g = open('../data/JustOaksData.csv','w')
     taxa = csv.reader(f)
     csvwrite = csv.writer(g)
+
+    csvwrite.writerow(["Genus", "Species"])
     oaks = set()
     for row in taxa:
         print(row)
