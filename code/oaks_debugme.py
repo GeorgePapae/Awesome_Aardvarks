@@ -42,13 +42,16 @@ def is_an_oak(name):
 
 def main(argv): 
     f = open('../data/TestOaksData.csv','r')
-    g = open('../data/JustOaksData.csv','w')
+    g = open('../results/JustOaksData.csv','w')
     taxa = csv.reader(f)
     csvwrite = csv.writer(g)
 
     csvwrite.writerow(["Genus", "Species"])
     oaks = set()
+        
     for row in taxa:
+        if row[0] == "Genus":   # skip header if present
+            continue
         print(row)
         print ("The genus is: ") 
         print(row[0] + '\n')
