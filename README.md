@@ -5,7 +5,7 @@ Group 1 (Awesome_Aardvarks) groupwork.
 - code: contains the code worked on for our assignment.
 - data: contains the data imported that our code uses.
 - results: output from code if written to a .txt file appears here. Empty, but kept with a .gitkeep.
-- results: bin for code. Empty.
+- sandbox: bin for code. Empty.
 - CONTRIBUTIONS.md - shows the each group members contributions to the project.
 
 ## Code Contents
