@@ -25,8 +25,8 @@ Worked on solving the missing oaks problem
 ---
 
 ### Shuqing Ren
-**Role(s)**: Missing oaks problem
-Worked on solving the missing oaks problem
+**Role(s)**: Groupwork on missing oaks problem input
+Based on previously submitted work of Ziyang. Worked on excluding the header row of input file, if a header start with "Genus" presents.
 
 ---
 
