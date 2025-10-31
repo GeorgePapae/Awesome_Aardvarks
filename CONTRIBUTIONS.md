@@ -19,8 +19,8 @@ Worked on adding all possible best alignments into the align_output file along w
 ---
 
 ### George Papaeracleous
-**Role(s)**: Missing Oaks problem  
-Worked on solving the missing oaks problem
+**Role(s)**: Groupwork on missing oaks problem output  
+Worked on including column headers to the output of the program.
 
 ---
 
