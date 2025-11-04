@@ -1,0 +1,396 @@
+======================================================================
+AUTOMATED FEEDBACK LOG
+======================================================================
+
+HOW TO READ THIS FEEDBACK:
+--------------------------
+1. This log contains detailed feedback on your code execution
+2. Each script is tested and results are shown with output and errors
+3. IMPORTANT: Read all the way to the END for a summary and debugging guidance
+4. The summary at the end will help you understand and fix any issues
+5. Scripts are run in a headless environment (no GUI applications)
+
+======================================================================
+
+Starting testing for Awesome Aardvarks
+
+Processing all weeks found in repository
+
+Your current Git repo size is about 1.42 MiB on disk
+
+Found directories: sandbox, results, data, .git, Feedback, code
+Found files: .gitignore, CONTRIBUTIONS.md, README.md
+
+Processing all weeks: code
+
+Found 3 code files to test.
+
+Note: Expected file checking not performed (no FileList provided).
+Expected file checking will only be performed during final assessment.
+
+======================================================================
+Script: align_seqs_better.py
+
+Contents:
+
+**********
+#!/usr/bin/env python3
+""" Aligns sequences in .fasta format """
+__author__ = 'Ekadh (er925@ic.ac.uk)'
+__version__ = '0.0.1'
+
+import sys
+
+def import_file_sequences():
+    """ Import the sequence file. store sequences in a list and calculate lengths """
+    seqs = []
+    current_seq = ""
+    with open('../data/testfasta.fasta', 'r') as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith(">"):
+                if current_seq:
+                    seqs.append(current_seq)
+                    current_seq = ""
+                continue
+            current_seq = current_seq + line
+        if current_seq:
+            seqs.append(current_seq)
+
+    seq2 = str(seqs[1])
+    seq1 = str(seqs[0])
+    l1 = len(seq1)
+    l2 = len(seq2)
+    if l1 >= l2:
+        s1 = seq1
+        s2 = seq2
+    else:
+        s1 = seq2
+        s2 = seq1
+        l1, l2 = l2, l1 # swap the two lengths
+    return(s1, s2, l1, l2)
+
+# A function that computes a score by returning the number of matches starting
+# from arbitrary startpoint (chosen by user)
+def calculate_score(s1, s2, l1, l2, startpoint):
+    """ Starts from a startpoint and calculates matches """
+    matched = "" # to hold string displaying alignements
+    score = 0
+    for i in range(l2):
+        if (i + startpoint) < l1:
+            if s1[i + startpoint] == s2[i]: # if the bases match
+                matched = matched + "*"
+                score = score + 1
+            else:
+                matched = matched + "-"
+    return score
+
+#import ipdb; ipdb.set_trace()
+
+# Test the function with some example starting points:
+# calculate_score(s1, s2, l1, l2, 0)
+# calculate_score(s1, s2, l1, l2, 1)
+# calculate_score(s1, s2, l1, l2, 5)
+
+def main(argv):
+    s1, s2, l1, l2 = import_file_sequences()
+    
+    my_best_align = []
+    my_best_score = -1
+
+    for i in range(l1): # Note that you just take the last alignment with the highest score
+        """ Aligns sequences by adding dots to change startpoint and counting matches """
+        z = calculate_score(s1, s2, l1, l2, i)
+        if z > my_best_score:
+            my_best_align = ["." * i + s2] # think about what this is doing!
+            my_best_score = z 
+        elif z == my_best_score:
+            my_best_align.append("." * i + s2)
+
+    with open("../results/align_output.txt", 'w') as out:
+        """ Writes output to a text file, check results folder """
+        out.write(f"Best number of matches: {my_best_score}\n\n")
+        out.write("Best alignments:\n")
+        for i in my_best_align:
+            out.write(f"{i}\n")
+            out.write(f"{s1}\n")
+    print("DONE! Check results folder\nBest score:", my_best_score)
+    return 0
+
+if __name__ == "__main__":
+    status = main(sys.argv)
+    sys.exit(status)
+
+**********
+
+Output (first 500 chars):
+
+**********
+DONE! Check results folder
+Best score: 32
+
+**********
+No errors.
+======================================================================
+Script: align_seqs_fasta.py
+
+Contents:
+
+**********
+#!/usr/bin/env python3
+""" 
+Name: align_seqs_fasta.py
+
+Description: Aligns any two sequences in separate files as explicit inputs given as command-line arguments 
+in .fasta format and writes the best alignment & its score to a .txt file in ../results/ folder.
+
+Usage:
+    (In ../code/ directory)
+    $ python3 align_seqs_fasta.py <relative_path_to_fasta1> <relative_path_to_fasta2>
+    OR
+    $ python3 align_seqs_fasta.py
+    (If no files are given, first two .fasta files in ../data/ are used.)
+"""
+
+__author__ = 'Ziyang Wang (zw2425@ic.ac.uk)'
+__version__ = '0.0.2'         
+
+import sys
+import os
+
+def get_input_sequences():
+    """Return two .fasta paths (relative to ../data/)."""
+    # Default files
+    default1 = os.path.join("..", "data", "407228326.fasta")
+    default2 = os.path.join("..", "data", "407228412.fasta")
+
+    # User supplied files (must be in relative path ../data/)
+    if len(sys.argv) == 3:                     
+        f1 = sys.argv[1]
+        f2 = sys.argv[2]
+    elif len(sys.argv) == 1:                   
+        f1, f2 = default1, default2
+    else:
+        print("If no files are given, first two .fasta files in ../data/ are used.")
+        sys.exit(1)
+
+    # Make sure the files exist
+    for path in (f1, f2):
+        if not os.path.exists(path):
+            print(f"Error: file not found -> {path}")
+            sys.exit(1)
+    return f1, f2
+
+def import_file_sequences(f1, f2):
+    """Read two FASTA files, return longer seq as s1, shorter as s2."""
+    def read_one(fname):
+        seq = ""
+        with open(fname, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith(">"):
+                    continue
+                seq += line
+        return seq
+
+    seq1 = read_one(f1) # read sequence from first .fasta file
+    seq2 = read_one(f2) # read sequence from second .fasta file
+
+    l1 = len(seq1)
+    l2 = len(seq2)
+    if l1 >= l2:
+        s1, s2 = seq1, seq2
+    else:
+        s1, s2 = seq2, seq1
+        l1, l2 = l2, l1
+    return s1, s2, l1, l2
+
+def calculate_score(s1, s2, l1, l2, startpoint):
+    """ Starts from a startpoint and calculates matches """
+    matched = "" # to hold string displaying alignements
+    score = 0
+    for i in range(l2):
+        if (i + startpoint) < l1:
+            if s1[i + startpoint] == s2[i]: # if the bases match
+                matched = matched + "*"
+                score = score + 1
+            else:
+                matched = matched + "-"
+    # Remove all print() here compared with align_seqs_fasta.py in prevention of printing large outputs to console
+    return score
+
+def main(argv):
+    file1, file2 = get_input_sequences() # get .fasta file paths
+
+    s1, s2, l1, l2 = import_file_sequences(file1, file2) # Read sequences from both files
+
+    my_best_align = None
+    my_best_score = -1
+
+    for i in range(l1):
+        z = calculate_score(s1, s2, l1, l2, i)
+        if z > my_best_score:
+            my_best_align = "." * i + s2
+            my_best_score = z
+
+    out_path = os.path.join("..", "results", "align_fasta_output.txt")
+
+    with open(out_path, 'w') as out: # write best alignment and score to align_fasta_output.txt
+        out.write(f"Best alignment:\n{my_best_align}\n")
+        out.write(f"{s1}\n")
+        out.write(f"Best number of matches: {my_best_score}")
+
+    print("Best score:", my_best_score)
+    return 0
+
+if __name__ == "__main__":
+    status = main(sys.argv)
+    sys.exit(status)
+**********
+
+Output (first 500 chars):
+
+**********
+Best score: 545
+
+**********
+No errors.
+======================================================================
+Script: oaks_debugme.py
+
+Contents:
+
+**********
+#!/usr/bin/env python3 
+
+"""
+oaks_debugme.py
+
+Descriptions: 
+    Filter oak species from a CSV file and save them to a new CSV file. 
+    Additionally, it can identify oak species even with minor typos in the genus name. 
+    Docstring includes examples and can be tested with doctest set in the key function is_an_oak(name).  
+
+Usage:
+    python3 oaks_debugme.py
+"""
+
+import csv
+import sys
+import os
+import difflib
+
+def is_an_oak(name):
+    """ 
+    Returns True if the genus is 'Quercus' (case-insensitive).
+    Allows minor typos (like one-character mistakes).
+
+    Examples:
+    >>> is_an_oak('Quercus robur')
+    True
+    >>> is_an_oak('quercus petraea')
+    True
+    >>> is_an_oak('Fagus sylvatica')
+    False
+    >>> is_an_oak('Quercuss something')
+    True
+    >>> is_an_oak('Querqus alba')
+    True
+    """
+    name = name.strip().lower()
+    genus = name.split(" ")[0]
+    # Find the similarity ratio between input and "quercus"
+    similarity = difflib.SequenceMatcher(None, genus, "quercus").ratio()
+    return similarity > 0.8  # accept if more than 80% similar
+
+def main(argv): 
+    f = open('../data/TestOaksData.csv','r')
+    g = open('../results/JustOaksData.csv','w')
+    taxa = csv.reader(f)
+    csvwrite = csv.writer(g)
+
+    csvwrite.writerow(["Genus", "Species"])
+    oaks = set()
+        
+    for row in taxa:
+        if row[0] == "Genus":   # skip header if present
+            continue
+        print(row)
+        print ("The genus is: ") 
+        print(row[0] + '\n')
+        if is_an_oak(row[0]):
+            print('FOUND AN OAK!\n')
+            csvwrite.writerow([row[0], row[1]])    
+
+    return 0
+    
+if (__name__ == "__main__"):
+    status = main(sys.argv)
+**********
+
+Output (first 500 chars):
+
+**********
+['Quercus', ' robur']
+The genus is: 
+Quercus
+
+FOUND AN OAK!
+
+['Fraxinus', ' excelsior']
+The genus is: 
+Fraxinus
+
+['Pinus', ' sylvestris']
+The genus is: 
+Pinus
+
+['Quercus', ' cerris']
+The genus is: 
+Quercus
+
+FOUND AN OAK!
+
+['Quercus', ' petraea']
+The genus is: 
+Quercus
+
+FOUND AN OAK!
+
+
+**********
+No errors.
+
+======================================================================
+FEEDBACK SUMMARY
+======================================================================
+
+Scripts tested: 3
+Scripts successful: 3
+Scripts with errors: 0
+Warnings/Notes: 1
+
+IMPORTANT DEBUGGING GUIDANCE:
+------------------------------
+
+Please review all warnings and errors, and your directory structure based on the above log.
+
+Ask yourself: Why did I not get these warnings or errors on my machine when I tested my code?
+Common reasons for environment differences:
+
+• File paths: Your local machine may have different directory structures
+• Dependencies: Missing packages or different versions
+• File permissions: Scripts may not be executable on the testing server
+• Case sensitivity: Linux systems are case-sensitive (your laptop may not be)
+• Working directory: Scripts may assume they run from a specific location
+• Input files: Required data files may be missing or in wrong locations
+
+Debugging steps:
+1. Test your code in a clean environment (fresh directory)
+2. Check all file paths are relative and correct
+3. Verify all required files are present and properly named
+4. Test on a case-sensitive system if possible
+5. Run your scripts from different directories to check robustness
+
+Fix these issues and test again. Good debugging skills are essential for scientific computing!
+
