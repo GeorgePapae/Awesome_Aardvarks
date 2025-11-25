@@ -1,6 +1,6 @@
-##PP_Regress.R
-##Author: Ekadh Ranganathan
-##Date: 31st October 2025
+##PP_Regress_loc.R
+##Author: Ekadh Ranganathan & George Papaeracleous
+##Date: 25th November 2025
 
 library(tidyverse)
 # Loading csv
@@ -36,7 +36,7 @@ print(p)
 ggsave(filename = "../results/Visualised_regression.pdf", plot = p)
 
 regs <- ecol_archives %>%
-  group_by(Type.of.feeding.interaction, Predator.lifestage) %>%
+  group_by(Location, Type.of.feeding.interaction, Predator.lifestage) %>%
   summarise({
     model <- lm(log(Predator.mass) ~ log(Prey.mass), data = cur_data())
     fpstats <- summary(model)
@@ -58,5 +58,5 @@ regs <- ecol_archives %>%
     )
   }, .groups = "drop")
 
-write.csv(regs, "../results/PP_Regress_Results.csv", row.names = FALSE)
+write.csv(regs, "../results/PP_Regress_Results_loc.csv", row.names = FALSE)
 
