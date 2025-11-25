@@ -31,6 +31,7 @@ cat("Actual correlation between successive years:", round(actual_cor, 4), "\n")
 permuted_cors <- matrix()
 permutations <- 10000
   
+set.seed(1)
 for (i in 1:permutations) {
   permuted_temps <- sample(temps, replace = FALSE) # Randomly shuffle the temperature sequence
     
@@ -48,4 +49,9 @@ cat("Based on", permutations, "permutations\n")
 
 # There is statistically significant evidence that temperatures show autocorrelation between successive 
 # years over the past century in Key West, Florida. Temperatures in one year tend to predict temperatures
-# in the next year better than random chance permuted for 10,000 times                                  
+# in the next year better than random chance permuted for 10,000 times
+
+# visualisation & save image 
+pdf("../results/Fig1.pdf", width = 6, height = 4)  # open a pdf device (size in inches)
+plot(year_i, year_j, xlab = "Previous Year Temp", ylab = "Following Year Temp")
+dev.off()
