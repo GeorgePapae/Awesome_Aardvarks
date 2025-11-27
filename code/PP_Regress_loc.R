@@ -13,7 +13,7 @@ ecol_archives$Prey.mass.unit[ecol_archives$Prey.mass.unit == "mg"] <- "g"
 regs <- ecol_archives %>%
   group_by(Location, Type.of.feeding.interaction, Predator.lifestage) %>%
   summarise({
-    model <- lm(log(Predator.mass) ~ log(Prey.mass), data = cur_data())
+    model <- lm(log(Predator.mass) ~ log(Prey.mass), data = pick(everything()))
     fpstats <- summary(model)
     
     fstat <- fpstats$fstatistic
