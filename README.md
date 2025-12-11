@@ -5,7 +5,6 @@ Group 1 (Awesome_Aardvarks) groupwork.
 - code: contains the code worked on for our assignment.
 - data: contains the data imported that our code uses.
 - results: output files from code appear here. Contains a figure and compiled pdf displaying the results of TAutoCorr.R.
-- sandbox: bin for code. Empty.
 - CONTRIBUTIONS.md - shows the each group members contributions to the project.
 
 ## Code Contents
