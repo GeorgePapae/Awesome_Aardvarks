@@ -1,7 +1,7 @@
 # Awesome_Aardvarks
 Group 1 (Awesome_Aardvarks) groupwork.
 
-## Overview
+## Directory Structure
 - code: contains the code worked on for our assignment.
 - data: contains the data imported that our code uses.
 - results: output files from code appear here. Contains a figure and compiled pdf displaying the results of TAutoCorr.R.
@@ -72,3 +72,27 @@ Rscript TAutoCorr.R
 # Or in R interactive session
 source("TAutoCorr.R")
 ```
+
+## Data Contents
+
+### 407228326.fasta
+-  DNA sequence data, used by align_seqs_fasta.py for pairwise sequence alignment.
+### 407228412.fasta
+- DNA sequence data, used by align_seqs_fasta.py for pairwise sequence alignment.
+### E.coli.fasta 
+- E. coli DNA sequence in FASTA format, reference or comparative sequence data for alignment analyses.
+### testfasta.fasta 
+- Test DNA sequences in FASTA format, used by align_seqs_better.py for multi-sequence alignment testing.
+### TestOaksData.csv
+- Test dataset containing species information, used by oaks_debugme.py to filter and identify oak species.
+### EcolArchives-E089-51-D1.csv 
+- Predator-prey ecological interaction data with mass measurements, used by PP_Regress_loc.R for regression analysis.
+### KeyWestAnnualMeanTemperature.RData
+- Annual mean temperature records for Key West, Florida, used by TAutoCorr.R for temporal autocorrelation analysis.
+
+## Results Contents
+
+### Fig1.pdf
+- TAutoCorr analysis output figure 
+### TAutoCorr.pdf
+- Compiled PDF from TAutoCorr.R displaying permutation test results and statistical significance of temperature autocorrelation.
